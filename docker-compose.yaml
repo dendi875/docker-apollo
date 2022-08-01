@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  apollo:
+    image: dendi875/docker-apollo:1.1.0
+    container_name: apollo
+    hostname: apollo
+    volumes:
+    - ./data:/opt
+    ports:
+      - "8070:8070"
+      - "8080:8080"
+      - "8090:8090"
+      - "8081:8081"
+      - "8091:8091"
+      - "8082:8082"
+      - "8092:8092"
+      - "8083:8083"
+      - "8093:8093"
+      - "8084:8084"
+      - "8094:8094"
+    #restart: always
+    environment:
+      # 启动前，确认对应环境的数据库已经建立，否则apollo无法启动.
+      # 端口:portal:8070; dev:8080,8090; fat:8081,8091; uat:8082,8092; pro:8083,8093;docker:8084,8094 
+      
+      # 开启Portal,默认端口: 8070
+      PORTAL_DB: jdbc:mysql://192.168.99.200:3306/ApolloPortalDB?characterEncoding=utf8
+      PORTAL_DB_USER: root
+      PORTAL_DB_PWD: 123456
+
+      # 开启env环境, 默认端口: config 8080, admin 8090
+      DEV_DB: jdbc:mysql://192.168.99.200:3306/ApolloConfigDB?characterEncoding=utf8
+      DEV_DB_USER: root
+      DEV_DB_PWD: 123456
+      DEV_CONFIG_PORT: 8080
+      DEV_ADMIN_PORT: 8090
+
+      # 开启自定义docker环境, 端口: config 8084, admin 8094
+      DOCKER_DB: jdbc:mysql://192.168.99.200:3306/ApolloConfigDBDocker?characterEncoding=utf8
+      DOCKER_DB_USER: root
+      DOCKER_DB_PWD: 123456
+      DOCKER_CONFIG_PORT: 8084
+      DOCKER_ADMIN_PORT: 8094
+
+      # 开启fat环境, 默认端口: config 8081, admin 8091
+      #FAT_DB: jdbc:mysql://192.168.99.200:3306/ApolloConfigDBFat?characterEncoding=utf8
+      #FAT_DB_USER: root
+      #FAT_DB_PWD: 123456
+
+      # 指定远程uat地址
+      #UAT_URL: http://localhost:8080
+
+      # 指定远程pro地址
+      #PRO_URL: http://www.baidu.com:8080
