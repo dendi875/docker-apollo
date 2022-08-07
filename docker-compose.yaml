@@ -53,3 +53,26 @@ services:
 
       # 指定远程pro地址
       #PRO_URL: http://www.baidu.com:8080
+    networks:
+      zq:
+        aliases:
+          - apollo
+    
+  #测试应用中使用添加自定义环境后的 Apollo 功能
+  apollo-extended-env:
+    image: dendi875/apollo-extended-env:1.0.0
+    container_name: apollo-extended-env
+    restart: always
+    ports:
+      - 8051:8051
+    environment:
+      - 'TZ="Asia/Shanghai"'
+    networks: #要加入的网络（同一网络上的服务可以使用它们的名称相互通信）
+      zq:
+        aliases:
+          - apollo-extended-env
+    depends_on:
+      - apollo
+# 创建网络以使容器之间通信
+networks:
+  zq:
